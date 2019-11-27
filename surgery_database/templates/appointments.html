@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="tab_container">
+        <div class="tab">
+            <div id="filter_tab">
+                <h5>Filter by:</h5>
+                <p>Specialization</p>
+                <div class="row">
+                    <p>
+                        <label>
+                            <input type="checkbox" value="General Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>General Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Thoracic Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Thoracic Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Colon and Rectal Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Colon and Rectal Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Neurological Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Neurological Surgery</span>
+                        </label>
+                    </p>
+                </div>
+
+                <button class="myCheckButton waves-effect light-blue btn">Filter</button>
+                <a href="{% url 'appointments' %}" class="waves-effect red btn" >Reset</a>
+            </div>
+
+            <h5>Sort by:</h5>
+            <ul>
+                <li><button onclick="sortByText(1)" class="waves-effect grey btn" >patient's name</button></li>
+                <li><button onclick="sortByText(2)" class="waves-effect grey btn">doctor's name</button></li>
+                <li><button onclick="sortByNum(0)" class="waves-effect grey btn">id</button></li>
+            </ul>
+
+        </div>
+
+        <div class="tab_c">
+            <div class="inline_buttons">
+                <h4>Appointments</h4>
+                <a class="waves-effect green btn" href="{%  url 'create_appointment' %}">Create appointment</a>
+            </div>
+
+            <input type="text" id="search_input" placeholder="Search for patients.." title="Type in a name">
+
+                <table id='table' class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Specialization</th>
+                            <th>Date and time</th>
+                            <th>Status</th>
+                            <th>Diagnosis</th>
+                            <th>Prescribtion</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="myTable">
+                    {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.appointment_id }}</td>
+                            <td><a href="{%  url 'manage_patient' appointment.patient_id.patient_id %}">{{ appointment.patient_id.first_name }} {{ appointment.patient_id.last_name }}</a></td>
+                            <td><a href="{%  url 'manage_doctor' appointment.doctor_id.doctor_id %}">{{ appointment.doctor_id.first_name }} {{ appointment.doctor_id.last_name }}</a></td>
+                            <td>{{ appointment.doctor_id.get_specialization_display }}</td>
+                            <td>{{ appointment.appointment_datetime }}</td>
+                            <td>{{ appointment.get_appointment_status_display }}</td>
+                            <td>{{ appointment.diagnosis}}</td>
+                            <td>{{ appointment.prescribtion }}</td>
+                            <td><a href="{%  url 'appointment_certificate' appointment.appointment_id %}">Appointment Certificate</a></td>
+                            <td><a class="waves-effect blue btn" href="{%  url 'manage_appointment' appointment.appointment_id %}">Edit</a></td>
+                            <td><a href="{% url 'remove_appointment' appointment.appointment_id %}" class="right-align"><i class="fas fa-trash"></i></a></td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+

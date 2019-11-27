@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container">
+    <h3> Surgeries stats</h3>
+     <table id='table' class="responsive-table">
+         <thead>
+             <tr>
+                 <th>#</th>
+                 <th>Name</th>
+                 <th>Successful</th>
+                 <th>Unsuccessful</th>
+                 <th>Cancelled</th>
+                 <th>Forthcoming</th>
+             </tr>
+         </thead>
+
+         <tbody>
+         {% for doctor, statuses in doctors_stats.items %}
+             <tr>
+                 <td>{{ doctor.doctor_id }}</td>
+                 <td><a href="{%  url 'manage_doctor' doctor.doctor_id %}"> {{ doctor.last_name }} {{ doctor.first_name }}</a></td>
+                 <td>{{ statuses.S }}</td>
+                 <td>{{ statuses.U }}</td>
+                 <td>{{ statuses.C }}</td>
+                 <td>{{ statuses.F }}</td>
+             </tr>
+
+         {% endfor %}
+
+         </tbody>
+     </table>
+    </div>
+{% endblock content %}

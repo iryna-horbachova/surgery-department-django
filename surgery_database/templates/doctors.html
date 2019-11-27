@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="tab_container">
+        <div class="tab">
+            <div id="filter_tab">
+                <h5>Filter by:</h5>
+                <p>Specialization</p>
+                <div class="row">
+                    <p>
+                        <label>
+                            <input type="checkbox" value="General Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>General Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Thoracic Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Thoracic Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Colon and Rectal Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Colon and Rectal Surgery</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="Neurological Surgery" name="save_info" class="filled-in myCheckBox">
+                            <span>Neurological Surgery</span>
+                        </label>
+                    </p>
+                </div>
+
+                <button class="myCheckButton waves-effect light-blue btn">Filter</button>
+                <a href="{% url 'doctors' %}" class="waves-effect red btn" >Reset</a>
+            </div>
+
+            <h5>Sort by:</h5>
+            <ul>
+                <li><button onclick="sortByText(1)" class="waves-effect grey btn" >name</button></li>
+                <li><button onclick="sortByNum(7)" class="waves-effect grey btn">experience</button></li>
+                <li><button onclick="sortByNum(0)" class="waves-effect grey btn">id</button></li>
+            </ul>
+
+        </div>
+
+        <div class="tab_c">
+            <div class="inline_buttons">
+                <h4>Doctors</h4>
+                <a class="waves-effect green btn" href="{%  url 'add_doctor' %}">Add</a>
+                <a class="waves-effect blue btn" href="{%  url 'doctor_stats' %}">Stats by surgeries</a>
+                <a class="waves-effect blue btn" href="{%  url 'doctor_stats_appointments' %}">Stats by appointments</a>
+                <a class="waves-effect blue btn" href="{%  url 'specialization_stats' %}">Stats by specialization</a>
+            </div>
+
+
+
+            <input type="text" id="search_input" placeholder="Search for names.." title="Type in a name">
+                <table id='table' class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Specialization</th>
+                            <th>E-mail</th>
+                            <th>Phone</th>
+                            <th>Education</th>
+                            <th>Experience</th>
+                            <th>Date of birth</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="myTable">
+                    {% for doctor in doctors %}
+                        <tr>
+                            <td>{{ doctor.doctor_id }}</td>
+                            <td><a href="{%  url 'manage_doctor' doctor.doctor_id %}"> {{ doctor.last_name }} {{ doctor.first_name }}</a></td>
+                            <td>{{ doctor.get_gender_display }}</td>
+                            <td>{{ doctor.get_specialization_display }}</td>
+                            <td>{{ doctor.email }}</td>
+                            <td>{{ doctor.phone }}</td>
+                            <td>{{ doctor.education }}</td>
+                            <td>{{ doctor.experience }}</td>
+                            <td>{{ doctor.birth_date }}</td>
+                            <td>{{ doctor.address }}</td>
+                        <td><a href="{% url 'remove_doctor' doctor.doctor_id %}" class="right-align"><i class="fas fa-trash"></i></a></td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+        </div>
+
+    </div>
+<script>
+
+</script>
+{% endblock %}

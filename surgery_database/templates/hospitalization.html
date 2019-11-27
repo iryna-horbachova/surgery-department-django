@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="tab_container">
+        <div class="tab">
+
+            <h5>Sort by:</h5>
+            <ul>
+                <li><button onclick="sortByText(1)" class="waves-effect grey btn" >patient</button></li>
+                <li><button onclick="sortByNum(4)" class="waves-effect grey btn">room</button></li>
+                <li><button onclick="sortByNum(0)" class="waves-effect grey btn">id</button></li>
+            </ul>
+        </div>
+
+        <div class="tab_c">
+            <div class="inline_buttons">
+                <h4>Hospitalizations</h4>
+                <!--<a class="waves-effect green btn" href="{%  url 'create_hospitalization' %}">Create a hospitalization</a>-->
+            </div>
+
+            <input type="text" id="search_input" placeholder="Search for patients.." title="Type in a name">
+            <table class="responsive-table" id="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Patient</th>
+                        <th>Check in date</th>
+                        <th>Check out date</th>
+                        <th>Room</th>
+                    </tr>
+                </thead>
+
+                <tbody id="myTable">
+                {% for hospitalization in hospitalizations %}
+                    <tr>
+                        <td>{{ hospitalization.hospitalization_id }}</td>
+                        <td><a href="{%  url 'manage_patient' hospitalization.patient_id.patient_id %}">{{ hospitalization.patient_id.first_name }} {{ hospitalization.patient_id.last_name }}</a></td>
+                        <td>{{ hospitalization.check_in_date }}</td>
+                        <td>{% if hospitalization.check_out_date %}{{ hospitalization.check_out_date }}{% else %} - {% endif %}</td>
+                        <td>{{ hospitalization.room_number.room_number }}</td>
+                        <td><a class="waves-effect blue btn" href="{%  url 'manage_hospitalization' hospitalization.hospitalization_id %}">Edit</a></td>
+                        <td>{% if not hospitalization.check_out_date %} <a class="waves-effect red btn" href="{%  url 'check_out_patient' hospitalization.hospitalization_id %}"> Check out patient </a>{% endif %}</td>
+                        <td><a href="{% url 'remove_hospitalization' hospitalization.hospitalization_id %}" class="right-align"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

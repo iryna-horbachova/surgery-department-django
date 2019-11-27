@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container">
+    <h3> Surgeries stats</h3>
+     <table id='table' class="responsive-table">
+         <thead>
+             <tr>
+                 <th>Specialization</th>
+                 <th>Appointments made</th>
+                 <th>Surgeries made</th>
+             </tr>
+         </thead>
+
+         <tbody>
+         {% for spec in specs %}
+             <tr>
+                 <td>{{ spec }}</td>
+                 <td>{{ app_stats|get_item:spec }}</td>
+                 <td>{{ sur_stats|get_item:spec }}</td>
+             </tr>
+
+         {% endfor %}
+
+         </tbody>
+     </table>
+    </div>
+{% endblock content %}

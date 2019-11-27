@@ -1,0 +1,391 @@
+ {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% block extra_links %}
+    {% endblock extra_links %}
+     <!-- Compiled and minified JavaScript -->
+
+    <script src="https://kit.fontawesome.com/10a644efe6.js"></script>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Surgery Dep.</title>
+</head>
+
+<body id="home" class="scrollspy">
+    <!-- Navbar -->
+    <div class="navbar-fixed">
+        <nav class="light-blue">
+            <a href="{% url 'home' %}" class="brand-logo home-logo">Surgery Dep.</a>
+                <div cnavs="nav-wrapper">
+
+                    <a href="#" data-target="mobile-nav"
+                       class="sidenav-trigger">
+                        <i class="material-icons">menu</i>
+                    </a>
+
+                    <ul class="right hide-on-med-and-down">
+
+                        <li  {% if request.get_full_path == 'doctors' %} class="active" {% endif %}>
+                            <a href="{%  url 'doctors'%}">Doctors</a>
+                        </li>
+                        <li  {% if request.get_full_path == 'patients' %} class="active" {% endif %}>
+                            <a href="{%  url 'patients'%}">Patients</a>
+                        </li>
+                        <li  {% if request.get_full_path == 'appointments' %} class="active" {% endif %}>
+                            <a href="{%  url 'appointments'%}">Appointments</a>
+                        </li>
+                        <li  {% if request.get_full_path == 'surgeries' %} class="active" {% endif %}>
+                            <a href="{%  url 'surgeries'%}">Surgeries</a>
+                        </li>
+                        <li  {% if request.get_full_path == 'rooms' %} class="active" {% endif %}>
+                            <a href="{%  url 'rooms'%}">Rooms</a>
+                        </li>
+                        <li  {% if request.get_full_path == 'hospitalization' %} class="active" {% endif %}>
+                            <a href="{%  url 'hospitalization' %}">Hospitalization</a>
+                        </li>
+                    </ul>
+                </div>
+        </nav>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert blue lighten-5" id="message">
+                <div class="container">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+
+{% block content %}
+{% endblock content %}
+
+    <!-- Footer -->
+    <footer class="page-footer light-blue">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Surgery Department</h5>
+                    <p class="grey-text text-lighten-4">For more information please contact us</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Contact us</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Phone: + 38 099 123 45 67</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">E-mail: surgery.dep@gmail.com </a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Telegram: @SurgeryDep </a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Facebook: facebook.com/surgery_dep</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright light-blue darken-2">
+            <div class="container center">
+                 2019 (c) Surgery Dep.
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}
+    {% endblock extra_scripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+
+    /* MAKING MATERIALIZE CSS SELECTS WORK */
+
+      $(document).ready(function(){
+    $('select').formSelect();
+  });
+    </script>
+    <script>
+        $(document).ready(function(){
+    $("#search_input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+        // FILTER TABLE
+        $(document).ready(function(){
+    $(".myCheckButton").on("click", function() {
+        const checkBox = $(".myCheckBox");
+        let values = [];
+        for (var i = 0; i < checkBox.length; i++) {
+            if (checkBox[i].checked) {
+                values.push(checkBox[i].defaultValue);
+            }
+        }
+        console.log(values);
+        let table = $("#myTable")[0].children;
+        let check = false;
+        for (var i = 0; i < table.length; i++) {
+            table[i].style.display = '';
+        }
+        for (var i = 0; i < table.length; i++) {
+            for (var j = 0; j < table[i].children.length; j++) {
+                for (var k = 0; k < values.length; k++) {
+                    console.log(table[i].children[j])
+                    console.log('inner', table[i].children[j].textContent)
+                    if (table[i].children[j].textContent.replace(/\s/g, "") == values[k].replace(/\s/g, "")) {
+                        check = true;
+                    }
+                }
+            }
+            if (!check) {
+                table[i].style.display = 'none';
+                check = false;
+            }
+            check = false;
+        }
+    });
+});
+        // FILTERING SPECIFIC COLUMN
+      function filterByCol(col) {
+      var values = [];
+      var checkBox = document.getElementsByClassName("myCheckBox");
+      for (var i = 0; i < checkBox.length; i++) {
+            if (checkBox[i].checked) {
+                values.push(checkBox[i].defaultValue.toUpperCase());
+            }
+        }
+      console.log(values);
+      var shown;
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+         td = tr[i].getElementsByTagName("td")[col];
+         shown = false;
+         console.log(td);
+         if (td) {
+           txtValue = td.textContent || td.innerText;
+             for (var k = 0; k < values.length; k++){
+
+                 if (txtValue.replace(/\s/g, "").toUpperCase() === values[k]) {
+                     tr[i].style.display = "";
+                     shown = true;
+                     break;
+                 }
+             }
+             if (!shown) {
+                  tr[i].style.display = "none";
+             }
+         }
+      }
+    }
+
+
+        /* select options */
+          function getSelectValues(select) {
+              var result = [];
+              var options = select && select.options;
+              var opt;
+
+              for (var i=0, iLen=options.length; i<iLen; i++) {
+                opt = options[i];
+
+                if (opt.selected) {
+                  result.push(opt.value || opt.text);
+                }
+              }
+              return result;
+            }
+
+        function filterTable() {
+            filter_tab = document.getElementById("filter_tab");
+            options = filter_tab.getElementsByTagName("option");
+            console.log('OPTIONS', options)
+            selected_options = [];
+
+            for (i = 1; i < options.length; i++) {
+                console.log('select', options[i]);
+                console.log(options[i].innerText);
+                selected_options.push(options[i].innerText)
+
+                //selected_options.add(getSelectValues(select));
+            }
+
+            console.log('*******selected', selected_options);
+
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+            console.log("*******TR*********", tr);
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                console.log(td);
+                if (td) {
+                    suitable = false;
+                    for (t in td) {
+                        txtValue = td.textContent || td.innerText;
+                        console.log('txt', txtValue);
+                        if (txtValue in selected_options) {
+                            tr[i].style.display = "";
+                            suitable = true;
+                            break;
+                        }
+                    }
+                    if (!suitable){
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
+        /* FUNCTIONS FOR SEARCHING, FILTERING, SORTING */
+    function searchByCol(col) {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("search_input");
+      filter = input.value.toUpperCase();
+      console.log(filter)
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[col];
+        console.log(td)
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          console.log('txt', txtValue)
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+
+    function sortByText(col) {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("table");
+      switching = true;
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName("TD")[col];
+          console.log('X ', x.innerHTML)
+          y = rows[i + 1].getElementsByTagName("TD")[col];
+          console.log('Y ', y)
+          // Check if the two rows should switch place:
+          if (x.textContent.toLowerCase() > y.textContent.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+              console.log(x.textContent.toLowerCase())
+              console.log(y.textContent.toLowerCase())
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+    }
+    }
+
+    function sortByNum(col) {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("table");
+      switching = true;
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName("TD")[col];
+
+          y = rows[i + 1].getElementsByTagName("TD")[col];
+
+          // Check if the two rows should switch place:
+          if (parseFloat(x.textContent) > parseFloat(y.textContent)) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+    }
+    }
+
+      function sortByAge(col) {
+      var table, rows, switching, i, x, y, shouldSwitch;
+      table = document.getElementById("table");
+      switching = true;
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName("TD")[col];
+          x = x.substring(0, x.indexOf('years'));
+
+          y = rows[i + 1].getElementsByTagName("TD")[col];
+          y = y.substring(0, y.indexOf('years'));
+
+          // Check if the two rows should switch place:
+          if (parseFloat(x.textContent) > parseFloat(y.textContent)) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+        }
+    }
+    }
+        /* DISPLAYING MESSAGES */
+    var message = document.getElementById("message");
+    setTimeout(function(){
+       message.style.display = "none";
+    }, 3000);
+
+</script>
+</body>
+</html>

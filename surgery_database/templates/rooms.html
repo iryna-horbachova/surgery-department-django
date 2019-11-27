@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="tab_container">
+        <div class="tab">
+            <div id="filter_tab">
+                <h5>Filter by:</h5>
+                <p>Floor</p>
+                <div class="row">
+                    <p>
+                        <label>
+                            <input type="checkbox" value="1"class="filled-in myCheckBox">
+                            <span>1</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="2" class="filled-in myCheckBox">
+                            <span>2</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="3" class="filled-in myCheckBox">
+                            <span>3</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="4" class="filled-in myCheckBox">
+                            <span>4</span>
+                        </label>
+                    </p>
+                </div>
+
+                <button onclick="filterByCol(1)" class="waves-effect light-blue btn">Filter</button>
+                <a href="{% url 'rooms' %}" class="waves-effect red btn" >Reset</a>
+            </div>
+
+            <h5>Sort by:</h5>
+            <ul>
+                <li><button onclick="sortByNum(0)" class="waves-effect grey btn">room number</button></li>
+                <li><button onclick="sortByNum(1)" class="waves-effect grey btn" >floor</button></li>
+                <li><button onclick="sortByNum(2)" class="waves-effect grey btn" >beds</button></li>
+                <li><button onclick="sortByNum(3)" class="waves-effect grey btn" >vacant places</button></li>
+            </ul>
+
+        </div>
+
+        <div class="tab_c">
+            <div class="inline_buttons">
+                <h4>Rooms</h4>
+                <a class="waves-effect green btn" href="{%  url 'add_room' %}">Add a room</a>
+            </div>
+
+            <input type="text" id="search_input" placeholder="Search for room numbers.." title="Type in a name">
+
+                <table id='table' class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Room number</th>
+                            <th>Floor</th>
+                            <th>Beds</th>
+                            <th>Vacant</th>
+                            <th>Patients</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="myTable">
+                    {% for room in rooms %}
+                        <tr>
+                            <td><a href="{%  url 'manage_room' room.room_number %}">{{ room.room_number }}</a></td>
+                            <td>{{ room.floor }}</td>
+                            <td>{{ room.beds }}</td>
+                            <td>{{ vacant|get_item:room.room_number }}</td>
+                            <td>
+                                <ul>
+                                {% for hospitalization in hospitalizations %}
+                                    {% if hospitalization.room_number == room %}
+                                        <li><a href="{%  url 'manage_patient' hospitalization.patient_id.patient_id %}">-{{hospitalization.patient_id.first_name}} {{hospitalization.patient_id.last_name}}, {{hospitalization.patient_id.address}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

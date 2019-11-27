@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+
+    <div class="tab_container">
+        <div class="tab">
+            <div id="filter_tab">
+                <h5>Filter by:</h5>
+                <div class="row">
+                    <p><strong>Blood type</strong></p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="A" class="filled-in myCheckBox">
+                            <span>A</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="B" class="filled-in myCheckBox">
+                            <span>B</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="AB" class="filled-in myCheckBox">
+                            <span>AB</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="checkbox" value="O" class="filled-in myCheckBox">
+                            <span>O</span>
+                        </label>
+                    </p>
+                </div>
+
+                <button class="waves-effect light-blue btn" onclick="filterByCol(9)">Filter</button>
+                <a href="{% url 'patients' %}" class="waves-effect red btn" >Reset</a>
+            </div>
+
+            <h5>Sort by:</h5>
+            <ul>
+                <li><button onclick="sortByText(1)" class="waves-effect grey btn" >name</button></li>
+                <li><button onclick="sortByNum(8)" class="waves-effect grey btn">age</button></li>
+                <li><button onclick="sortByNum(0)" class="waves-effect grey btn">id</button></li>
+            </ul>
+
+        </div>
+
+        <div class="tab_c">
+            <div class="inline_buttons">
+                <h4>Patients</h4>
+                <a class="waves-effect green btn" href="{%  url 'add_patient' %}">Add</a>
+            </div>
+
+
+
+            <input type="text" id="search_input" placeholder="Search for names.." title="Type in a name">
+                <table id='table' class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>E-mail</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Date of birth</th>
+                            <th>Date of death</th>
+                            <th>Age</th>
+                            <th>Blood type</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="myTable">
+                    {% for patient in patients %}
+                        <tr>
+
+                            <td>{{ patient.patient_id }}</td>
+                            <td><a href="{%  url 'manage_patient' patient.patient_id %}"> {{ patient.last_name }} {{ patient.first_name }}</a></td>
+                            <td>{{ patient.get_gender_display }}</td>
+                            <td>{{ patient.email }}</td>
+                            <td>{{ patient.phone }}</td>
+                            <td>{{ patient.address }}</td>
+                            <td>{{patient.birth_date }}</td>
+                            <td>{% if patient.death_date %} {{ patient.death_date }} {% else %} - {% endif %}</td>
+                            <td>
+                                {% if patient.death_date %}
+                                    {{ patient.death_date|timeuntil:patient.birth_date }}
+                                {% else %}
+                                    {{ today|timeuntil:patient.birth_date }}
+                                {% endif %}
+                            </td>
+                            <td>{{ patient.get_blood_type_display }}
+                            <td><a href="{%  url 'medical_record' patient.patient_id %}">Medical record</a></td>
+                            <td>{% if patient.death_date %}<a href="{%  url 'death_certificate' patient.patient_id %}">Death Certificate</a>{% endif %}</td>
+                            <td>{% if not patient.is_hospitalized %}<a class="waves-effect blue btn" href="{%  url 'hospitalize' patient.patient_id %}">Hospitalize</a>{% endif %}</td>
+
+                            <td><a href="{% url 'remove_patient' patient.patient_id %}" class="right-align"><i class="fas fa-trash"></i></a></td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

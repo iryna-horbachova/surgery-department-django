@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block content %}
+    
+    <div class="container">
+     <div class="row">
+            <form class="col s12" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input name="patient_id" id="patient_id" type="text" class="validate">
+                        <label for="patient_id">First Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input name="doctor_id" id="doctor_id" type="text" class="validate">
+                        <label for="doctor_id">Last Name</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="appointment_datetime" id="appointment_datetime" type="text" class="validate">
+                        <label for="appointment_datetime">Address </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input name="appointment_status" id="appointment_status" type="text" class="validate">
+                        <label for="appointment_status">Country</label>
+                    </div>
+                </div>
+                <hr>
+                <div class="right-align total">
+                    <button type="submit" class="waves-effect waves-light btn green checkout">Continue</button>
+                </div>
+             </form>
+        </div>
+
+
+    </div>
+
+
+{% endblock content %}
